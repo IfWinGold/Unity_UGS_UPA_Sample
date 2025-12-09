@@ -21,6 +21,7 @@ public class UILogin : MonoBehaviour
         loginButton.onClick.AddListener(LoginButtonPressed);
         loginController.OnSignedIn += LoginController_OnSignedIn;
         loginController.OnAvatarUpdate += LoginController_OnAvatarUpdate;
+        loginController.OnSignedOut += LoginController_OnSignedOut;
     }
 
     private void OnDisable()
@@ -28,6 +29,7 @@ public class UILogin : MonoBehaviour
         loginButton.onClick.RemoveListener(LoginButtonPressed);
         loginController.OnSignedIn -= LoginController_OnSignedIn;
         loginController.OnAvatarUpdate -= LoginController_OnAvatarUpdate;
+        loginController.OnSignedOut -= LoginController_OnSignedOut;
     }
 
     private async void LoginButtonPressed()
@@ -43,6 +45,14 @@ public class UILogin : MonoBehaviour
        
         userIdText.text = $"id_{playerProfile.playerInfo.Id}";
         userNameText.text = profile.Name;
+    }
+    private void LoginController_OnSignedOut()
+    {
+        loginPanel.gameObject.SetActive(true);
+        userPanel.gameObject.SetActive(false);
+
+        userIdText.text = string.Empty;
+        userNameText.text = string.Empty;
     }
     private void LoginController_OnAvatarUpdate(PlayerProfile profile)
     {

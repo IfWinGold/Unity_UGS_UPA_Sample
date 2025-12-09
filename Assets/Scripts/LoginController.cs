@@ -8,6 +8,7 @@ using UnityEngine;
 public class LoginController : MonoBehaviour
 {
     public event Action<PlayerProfile> OnSignedIn;
+    public event Action OnSignedOut;
     public event Action<PlayerProfile> OnAvatarUpdate;
 
     private PlayerInfo playerInfo;
@@ -133,7 +134,6 @@ public class LoginController : MonoBehaviour
     void SignOutThenClearSession()
     {
         AuthenticationService.Instance.SignOut();
-
         // Do something else...
 
         // Now clear the session token to allow a new anonymous player to be created
@@ -158,7 +158,11 @@ public class LoginController : MonoBehaviour
         AuthenticationService.Instance.SignedOut += () =>
         {
             Debug.Log($"The player has successfully signed out");
+            PlayerAccountService.Instance.SignOut();
+            OnSignedOut?.Invoke();
         };
+        
+        
     }
 }
 
